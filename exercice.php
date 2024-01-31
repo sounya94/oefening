@@ -1,30 +1,28 @@
 <?php
 
-// Informations de connexion à la base de données
+// eerst oefening van sounya 
 $serveur = "localhost";
 $port = "3306";
 $utilisateur = "root";
 $motDePasse = "";
 $baseDeDonnees = "student";
 
-// Connexion à la base de données
+
 $mysqli = new mysqli("$serveur:$port", $utilisateur, $motDePasse, $baseDeDonnees);
 
-// Vérifier la connexion
+
 if ($mysqli->connect_error) {
     die("Échec de la connexion à la base de données: " . $mysqli->connect_error);
 }
 
-// Traitement du formulaire d'insertion
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nom = $_POST["nom"];
     $prenom = $_POST["prenom"];
     $note = $_POST["note"];
 
-    // Requête SQL pour insérer un nouvel étudiant
     $insertQuery = "INSERT INTO étudiant (nom, prenom, note) VALUES ('$nom', '$prenom', '$note')";
 
-    // Exécution de la requête
     if ($mysqli->query($insertQuery) === TRUE) {
         echo "Nouvel étudiant inséré avec succès.";
     } else {
@@ -32,14 +30,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Traitement de la suppression d'un étudiant
 if (isset($_GET["delete"])) {
     $idToDelete = $_GET["delete"];
 
-    // Requête SQL pour supprimer l'étudiant
     $deleteQuery = "DELETE FROM étudiant WHERE id = $idToDelete";
 
-    // Exécution de la requête
     if ($mysqli->query($deleteQuery) === TRUE) {
         echo "<p>Étudiant supprimé avec succès.</p>";
     } else {
@@ -47,15 +42,12 @@ if (isset($_GET["delete"])) {
     }
 }
 
-// Requête SQL pour récupérer les étudiants avec les meilleures notes
 $sql = "SELECT * FROM étudiant ORDER BY note DESC";
 
-// Exécution de la requête
 $resultat = $mysqli->query($sql);
 
-// Vérifier s'il y a des résultats
 if ($resultat->num_rows > 0) {
-    // Afficher les résultats dans un tableau HTML
+
     echo "<div style='float: left; margin-right: 20px;'>";
     echo "<h2>Étudiants avec les meilleures notes :</h2>";
     echo "<table border='1'>";
@@ -76,7 +68,6 @@ if ($resultat->num_rows > 0) {
     echo "Aucun résultat trouvé.";
 }
 
-// Fermer la connexion
 $mysqli->close();
 
 ?>
